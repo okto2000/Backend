@@ -3,17 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\produk;
+use App\Models\Produk;
 
 class ProdukController extends Controller
 {
     public function index()
 {
-    $products = produk::all();
+    $products = Produk::all();
     return response()->json(['data' => $products]);
 }
 
-public function store(Request $request)
+public function add(Request $request)
 {
     // Validasi data yang diterima
     $validatedData = $request->validate([
@@ -23,21 +23,21 @@ public function store(Request $request)
         'price' => 'required|numeric'
     ]);
 
-    // Membuat produk baru
-    $product = produk::create([
+    // Membuat Produk baru
+    $product = Produk::create([
         'nama_produk' => $validatedData['nama_produk'],
         'image' => $validatedData['image'],
         'id_kategori' => $validatedData['id_kategori'],
         'price' => $validatedData['price']
     ]);
 
-    // Mengembalikan respons dengan produk yang baru dibuat
+    // Mengembalikan respons dengan Produk yang baru dibuat
     return response()->json(['data' => $product], 201);
 }
 
 public function show($id_produk)
 {
-    $product = produk::findOrFail($id_produk);
+    $product = Produk::findOrFail($id_produk);
     return response()->json(['data' => $product]);
 }
 
@@ -66,7 +66,7 @@ public function update(Request $request, $id_produk)
     }
 public function destroy($id_produk)
 {
-    $product = produk::findOrFail($id_produk);
+    $product = Produk::findOrFail($id_produk);
     $product->delete();
     return response()->json(['message' => 'Product deleted']);
 }
