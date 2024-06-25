@@ -28,6 +28,6 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return response()->json(['message' => 'Pelanggan registration successful', 'pelanggan' => $pelanggan], 201);
+        return response()->json(['message' => 'Registration successful', 'pelanggan' => $pelanggan], 201);
     }
 }

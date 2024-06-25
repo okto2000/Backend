@@ -33,7 +33,7 @@ class AdminController extends Controller
         ]);
 
         
-        return response()->json(['data' => $admin], 201);
+        return response()->json(['message' => 'Admin berhasil ditambahkan','data' => $admin], 201);
     }
 
     //Menampilkan detail admin berdasarkan ID
@@ -63,7 +63,7 @@ class AdminController extends Controller
         $admin->password = $validatedData['password'];
         $admin->save();
 
-        return response()->json(['data' => $admin], 200);
+        return response()->json(['message' => 'Admin berhasil diupdate','data' => $admin], 200);
     }
 
     //Menghapus admin berdasarkan ID

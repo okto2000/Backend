@@ -42,7 +42,7 @@ class KaryawanController extends Controller
         ]);
 
         
-        return response()->json(['data' => $karyawan], 201);
+        return response()->json(['message' => 'Karyawan berhasil ditambahkan','data' => $karyawan], 201);
     }
 
     //Menampilkan detail karyawan berdasarkan ID
@@ -82,7 +82,7 @@ class KaryawanController extends Controller
         $karyawan->password = $validatedData['password'];
         $karyawan->save();
 
-        return response()->json(['data' => $karyawan], 200);
+        return response()->json(['message' => 'Karyawan berhasil diupdate','data' => $karyawan], 200);
     }
 
     //Menghapus karyawan berdasarkan ID
