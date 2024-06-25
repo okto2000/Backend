@@ -22,6 +22,11 @@ return new class extends Migration
         Schema::create('tbl_karyawan', function (Blueprint $table) {
             $table->id('id_karyawan');
             $table->string('username')->unique();
+            $table->string('nama');
+            $table->string('alamat');
+            $table->string('notelp');
+            $table->decimal('gaji', 8, 2)->nullable();
+            $table->enum('status', ['aktif', 'tidak aktif']);
             $table->string('email')->unique();
             $table->string('password');
             $table->rememberToken();

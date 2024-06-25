@@ -9,7 +9,7 @@ use App\Models\Admin;
 class AdminController extends Controller
 {
     // Menampilkan semua admin    
-    public function index()
+    public function showall()
     {
         $admins = Admin::all();
         return response()->json(['data' => $admins]);
@@ -67,7 +67,6 @@ class AdminController extends Controller
     }
 
     //Menghapus admin berdasarkan ID
-     
     public function destroy($id_admin)
     {
         $admin = Admin::findOrFail($id_admin);

@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Kategori;
 class KategoriController extends Controller
 {
-    public function index()
+    //Menampilkan semua data kategori
+    public function showall()
     {
        
         $kategori = Kategori::all();
@@ -15,6 +16,7 @@ class KategoriController extends Controller
         return response()->json(['data' => $kategori]);
     }
 
+//Menambahkan kategori
 public function add(Request $request)
 {
     
@@ -31,6 +33,7 @@ public function add(Request $request)
     return response()->json(['data' => $kategori], 201);
 }
 
+//Menampilkan Kategori by ID
 public function show($id_produk)
 {
   
@@ -40,6 +43,7 @@ public function show($id_produk)
     return response()->json(['data' => $kategori]);
 }
 
+//Update a Kategori by ID
 public function update(Request $request, $id_produk)
     {
         $kategori = Kategori::find($id_produk);
@@ -60,6 +64,8 @@ public function update(Request $request, $id_produk)
      
         return response()->json(['data' => $kategori], 200);
     }
+
+    //Delete Kategori by ID
 public function destroy($id_produk)
 {
     $kategori = Kategori::findOrFail($id_produk);
