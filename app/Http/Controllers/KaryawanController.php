@@ -68,7 +68,7 @@ class KaryawanController extends Controller
             'notelp' => 'required|string|max:255',
             'gaji' => 'required|numeric',
             'status' => 'required',
-            'email' => 'required|string|email|max:255|unique:tbl_karyawan',
+            'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:8',
         ]);
 
