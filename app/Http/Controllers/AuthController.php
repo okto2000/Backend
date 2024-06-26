@@ -8,6 +8,7 @@ use App\Models\Pelanggan;
 
 class AuthController extends Controller
 {
+    // Registers a new pelanggan.
     public function registerPelanggan(Request $request)
     {
         $request->validate([

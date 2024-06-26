@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KaryawanController;
+use App\Http\Controllers\PelangganController;
 
 //Route midtrans
 Route::post('/gettoken', [MidtransController::class, 'gettoken']);
@@ -45,3 +46,6 @@ Route::delete('/kategori/{id_kategori}', [KategoriController::class, 'destroy'])
 
 //Route auth
 Route::post('/register/pelanggan', [AuthController::class, 'registerPelanggan']);
+
+//Route pelanggan
+Route::get('/pelanggan', [PelangganController::class, 'showall']);

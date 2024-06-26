@@ -12,7 +12,7 @@ class AdminController extends Controller
     public function showall()
     {
         $admins = Admin::all();
-        return response()->json(['data' => $admins]);
+        return response()->json($admins);
     }
 
     // Menambahkan admin baru
@@ -33,7 +33,7 @@ class AdminController extends Controller
         ]);
 
         
-        return response()->json(['message' => 'Admin berhasil ditambahkan','data' => $admin], 201);
+        return response()->json($admin, 201);
     }
 
     //Menampilkan detail admin berdasarkan ID
@@ -63,7 +63,7 @@ class AdminController extends Controller
         $admin->password = $validatedData['password'];
         $admin->save();
 
-        return response()->json(['message' => 'Admin berhasil diupdate','data' => $admin], 200);
+        return response()->json($admin, 200);
     }
 
     //Menghapus admin berdasarkan ID

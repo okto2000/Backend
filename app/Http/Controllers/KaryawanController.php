@@ -11,7 +11,7 @@ class KaryawanController extends Controller
     public function showall()
     {
         $karyawans = Karyawan::all();
-        return response()->json(['data' => $karyawans]);
+        return response()->json($karyawans);
     }
 
     // Menambahkan karyawan baru
@@ -42,7 +42,7 @@ class KaryawanController extends Controller
         ]);
 
         
-        return response()->json(['message' => 'Karyawan berhasil ditambahkan','data' => $karyawan], 201);
+        return response()->json($karyawan, 201);
     }
 
     //Menampilkan detail karyawan berdasarkan ID
@@ -92,4 +92,5 @@ class KaryawanController extends Controller
         $karyawan->delete();
         return response()->json(['message' => 'Karyawan berhasil dihapus']);
     }
+    
 }

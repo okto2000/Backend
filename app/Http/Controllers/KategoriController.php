@@ -13,7 +13,7 @@ class KategoriController extends Controller
         $kategori = Kategori::all();
 
         
-        return response()->json(['data' => $kategori]);
+        return response()->json($kategori);
     }
 
 //Menambahkan kategori
@@ -30,7 +30,7 @@ public function add(Request $request)
     ]);
 
    
-    return response()->json(['data' => $kategori], 201);
+    return response()->json($kategori, 201);
 }
 
 //Menampilkan Kategori by ID
@@ -40,7 +40,7 @@ public function show($id_produk)
     $kategori = Kategori::findOrFail($id_produk);
 
  
-    return response()->json(['data' => $kategori]);
+    return response()->json($kategori);
 }
 
 //Update a Kategori by ID
@@ -62,7 +62,7 @@ public function update(Request $request, $id_produk)
         $kategori->save();
 
      
-        return response()->json(['data' => $kategori], 200);
+        return response()->json($kategori, 200);
     }
 
     //Delete Kategori by ID
