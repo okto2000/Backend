@@ -11,33 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tbl_admin', function (Blueprint $table) {
-            $table->id('id_admin');
+        Schema::create('admins', function (Blueprint $table) {
+            $table->id();
             $table->string('username')->unique();
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
-        });
-        Schema::create('tbl_karyawan', function (Blueprint $table) {
-            $table->id('id_karyawan');
-            $table->string('username')->unique();
-            $table->string('nama');
-            $table->string('alamat');
-            $table->string('notelp');
-            $table->decimal('gaji', 8, 2)->nullable();
-            $table->enum('status', ['aktif', 'tidak aktif']);
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
-        });
-        Schema::create('tbl_pelanggan', function (Blueprint $table) {
-            $table->id('id_pelanggan');
-            $table->string('username')->unique();
-            $table->string('nama');
-            $table->string('alamat');
-            $table->string('notelp');
             $table->string('email')->unique();
             $table->string('password');
             $table->rememberToken();
@@ -65,8 +41,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tbl_admin');
-        Schema::dropIfExists('tbl_karyawan');
-        Schema::dropIfExists('tbl_pelanggan');
+        Schema::dropIfExists('admins');
     }
 };

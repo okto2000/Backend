@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Admin;
-
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -29,7 +29,7 @@ class AdminController extends Controller
         $admin = Admin::create([
             'username' => $validatedData['username'],
             'email' => $validatedData['email'],
-            'password' => $validatedData['password'],
+            'password' => Hash::make($validatedData['password']),
         ]);
 
         
@@ -60,7 +60,7 @@ class AdminController extends Controller
 
         $admin->username = $validatedData['username'];
         $admin->email = $validatedData['email'];
-        $admin->password = $validatedData['password'];
+        $admin->password = Hash::make($validatedData['password']);
         $admin->save();
 
         return response()->json($admin, 200);
@@ -71,6 +71,6 @@ class AdminController extends Controller
     {
         $admin = Admin::findOrFail($id_admin);
         $admin->delete();
-        return response()->json(['message' => 'Admin berhasil dihapus']);
+        return response()->json(['message' => 'Admin successfully deleted']);
     }
 }

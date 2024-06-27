@@ -3,12 +3,12 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MidtransController;
-use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\KaryawanController;
-use App\Http\Controllers\PelangganController;
+use App\Http\Controllers\CategorieController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ProductController;
 
 //Route midtrans
 Route::post('/gettoken', [MidtransController::class, 'gettoken']);
@@ -16,36 +16,36 @@ Route::post('/gettoken-test', function () {
     return response()->json(["status" => "OK"]);
 });
 
-//Route produk
-Route::get('/produk', [ProdukController::class, 'showall']);
-Route::post('/produk', [ProdukController::class, 'add']);
-Route::get('/produk/{id_produk}', [ProdukController::class, 'show']);
-Route::put('/produk/{id_produk}', [ProdukController::class, 'update']);
-Route::delete('/produk/{id_produk}', [ProdukController::class, 'destroy']);
+//Route product
+Route::get('/product', [ProductController::class, 'showall']);
+Route::post('/product', [ProductController::class, 'add']);
+Route::get('/product/{id}', [ProductController::class, 'show']);
+Route::put('/product/{id}', [ProductController::class, 'update']);
+Route::delete('/product/{id}', [ProductController::class, 'destroy']);
 
 //Route admin
 Route::get('/admin', [AdminController::class, 'showall']);
 Route::post('/admin', [AdminController::class, 'add']);
-Route::get('/admin/{id_admin}', [AdminController::class, 'show']);
-Route::put('/admin/{id_admin}', [AdminController::class, 'update']);
-Route::delete('/admin/{id_admin}', [AdminController::class, 'destroy']);
+Route::get('/admin/{id}', [AdminController::class, 'show']);
+Route::put('/admin/{id}', [AdminController::class, 'update']);
+Route::delete('/admin/{id}', [AdminController::class, 'destroy']);
 
-//Route karyawan
-Route::get('/karyawan', [KaryawanController::class, 'showall']);
-Route::post('/karyawan', [KaryawanController::class, 'add']);
-Route::get('/karyawan/{id_karyawan}', [KaryawanController::class, 'show']);
-Route::put('/karyawan/{id_karyawan}', [KaryawanController::class, 'update']);
-Route::delete('/karyawan/{id_karyawan}', [KaryawanController::class, 'destroy']);
+//Route employee
+Route::get('/employee', [EmployeeController::class, 'showall']);
+Route::post('/employee', [EmployeeController::class, 'add']);
+Route::get('/employee/{id}', [EmployeeController::class, 'show']);
+Route::put('/employee/{id}', [EmployeeController::class, 'update']);
+Route::delete('/employee/{id}', [EmployeeController::class, 'destroy']);
 
-//Route kategori
-Route::get('/kategori', [KategoriController::class, 'showall']);
-Route::post('/kategori', [KategoriController::class, 'add']);
-Route::get('/kategori/{id_kategori}', [KategoriController::class, 'show']);
-Route::put('/kategori/{id_kategori}', [KategoriController::class, 'update']);
-Route::delete('/kategori/{id_kategori}', [KategoriController::class, 'destroy']);
+//Route categorie
+Route::get('/categorie', [CategorieController::class, 'showall']);
+Route::post('/categorie', [CategorieController::class, 'add']);
+Route::get('/categorie/{id}', [CategorieController::class, 'show']);
+Route::put('/categorie/{id}', [CategorieController::class, 'update']);
+Route::delete('/categorie/{id}', [CategorieController::class, 'destroy']);
 
 //Route auth
-Route::post('/register/pelanggan', [AuthController::class, 'registerPelanggan']);
+Route::post('/register/customer', [AuthController::class, 'registerCustomer']);
 
-//Route pelanggan
-Route::get('/pelanggan', [PelangganController::class, 'showall']);
+//Route customer
+Route::get('/customer', [CustomerController::class, 'showall']);
