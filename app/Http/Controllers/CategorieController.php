@@ -7,7 +7,7 @@ use App\Models\Categorie;
 class CategorieController extends Controller
 {
     //Menampilkan semua data categorie
-    public function showall()
+    public function index()
     {
        
         $categories = Categorie::all();
@@ -17,7 +17,7 @@ class CategorieController extends Controller
     }
 
 //Menambahkan categorie
-public function add(Request $request)
+public function store(Request $request)
 {
     
     $validatedData = $request->validate([

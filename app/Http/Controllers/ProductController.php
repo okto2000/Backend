@@ -8,14 +8,14 @@ use App\Models\Product;
 class ProductController extends Controller
 {
     //Menampilkan semua produk
-    public function showall()
+    public function index()
     {
         $products = Product::all();
         return response()->json(['data' => $products]);
     }
 
     //Menambahkan produk
-    public function add(Request $request)
+    public function store(Request $request)
     {
         $validatedData = $request->validate([
             'product_name' => 'required|string|max:255',

@@ -9,16 +9,15 @@ use Illuminate\Support\Facades\Hash;
 class EmployeeController extends Controller
 {
     // Menampilkan semua employee    
-    public function showall()
+    public function index()
     {
         $employees = Employee::all();
         return response()->json($employees);
     }
 
     // Menambahkan employee baru
-    public function add(Request $request)
+    public function store(Request $request)
     {
-        
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'address' => 'required|string|max:255',
@@ -29,7 +28,6 @@ class EmployeeController extends Controller
             'password' => 'required|string|min:8',
         ]);
 
-        
         $employee = Employee::create([
             'name' => $validatedData['name'],
             'address' => $validatedData['address'],
@@ -40,27 +38,26 @@ class EmployeeController extends Controller
             'password' => Hash::make($validatedData['password']),
         ]);
 
-        
         return response()->json($employee, 201);
     }
 
     //Menampilkan detail employee berdasarkan ID
-    public function show($id_employee)
+    public function show($id)
     {
-        $employee = Employee::findOrFail($id_employee);
+        $employee = Employee::findOrFail($id);
         return response()->json(['data' => $employee]);
     }
 
     // Mengupdate data employee berdasarkan ID
-    public function update(Request $request, $id_employee)
+    public function update(Request $request, $id)
     {
-        $employee = Employee::find($id_employee);
+        $employee = Employee::find($id);
 
         if (!$employee) {
-            return response()->json(['message' => 'Employee tidak ditemukan'], 404);
+            return response()->json(['message' => 'Employee not found'], 404);
         }
 
-        $validatedData = $request->validate([
+        $request->validate([
             'name' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'notelp' => 'required|string|max:255',
@@ -70,24 +67,24 @@ class EmployeeController extends Controller
             'password' => 'required|string|min:8',
         ]);
 
-        $employee->name = $validatedData['name'];
-        $employee->address = $validatedData['address'];
-        $employee->notelp = $validatedData['notelp'];
-        $employee->salary = $validatedData['salary'];
-        $employee->status = $validatedData['status'];
-        $employee->email = $validatedData['email'];
-        $employee->password = Hash::make($validatedData['password']);
-        $employee->save();
+        $employee->fill([
+            'name' => $request->name,
+            'address' => $request->address,
+            'notelp' => $request->notelp,
+            'salary' => $request->salary,
+            'status' => $request->status,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ])->save();
 
-        return response()->json(['message' => 'Employee berhasil diupdate','data' => $employee], 200);
+        return response()->json(['message' => 'Employee successfully updated', 'data' => $employee], 200);
     }
 
     //Menghapus employee berdasarkan ID
-    public function destroy($id_employee)
+    public function destroy($id)
     {
-        $employee = Employee::findOrFail($id_employee);
+        $employee = Employee::findOrFail($id);
         $employee->delete();
         return response()->json(['message' => 'Employee successfully deleted']);
     }
-    
 }

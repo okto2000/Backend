@@ -18,6 +18,8 @@ return new class extends Migration
             $table->foreignId('id_category');
             $table->decimal('price', 8, 2);
             $table->timestamps();
+
+            $table->foreign('id_category')->references('id')->on('categories');
         });
     }
 

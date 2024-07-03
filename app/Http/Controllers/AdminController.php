@@ -9,14 +9,14 @@ use Illuminate\Support\Facades\Hash;
 class AdminController extends Controller
 {
     // Menampilkan semua admin    
-    public function showall()
+    public function index()
     {
         $admins = Admin::all();
         return response()->json($admins);
     }
 
     // Menambahkan admin baru
-    public function add(Request $request)
+    public function store(Request $request)
     {
         
         $validatedData = $request->validate([

@@ -16,11 +16,10 @@ return new class extends Migration
                 $table->string('name');
                 $table->string('address');
                 $table->string('notelp');
-                $table->decimal('salary', 15, 2); // Menggunakan BIGINT untuk kolom sallary
+                $table->decimal('salary', 15, 2);
                 $table->enum('status', ['active', 'non active']);
                 $table->string('email')->unique();
                 $table->string('password');
-                $table->rememberToken();
                 $table->timestamps();
             });
     }
