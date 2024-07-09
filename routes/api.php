@@ -49,4 +49,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //Route customer
     Route::get('/customer', [CustomerController::class, 'index']);
+    
+    // Route Logout
+    Route::post('/logout', [AuthController::class, 'logout']);
 });

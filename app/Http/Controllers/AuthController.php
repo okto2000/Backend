@@ -64,4 +64,13 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Registration successful', 'customer' => $customer], 201);
     }
+
+    // Logout.
+    public function logout(Request $request)
+    {
+        $token = $request->user()->currentAccessToken();
+        $token->delete();
+
+        return response()->json(['message' => 'Successfully logged out']);
+    }
 }
