@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\NewCategorieRequest;
 use Illuminate\Http\Request;
 use App\Models\Categorie;
 class CategorieController extends Controller
@@ -17,16 +18,11 @@ class CategorieController extends Controller
     }
 
 //Menambahkan categorie
-public function store(Request $request)
+public function store(NewCategorieRequest $request)
 {
-    
-    $validatedData = $request->validate([
-        'category_name' => 'required|string|max:255',
-    ]);
-
    
     $categorie = Categorie::create([
-        'category_name' => $validatedData['category_name'],
+        'category_name' => $request['category_name'],
     ]);
 
    
@@ -44,7 +40,7 @@ public function show($id_produk)
 }
 
 //Update a Categorie by ID
-public function update(Request $request, $id_produk)
+public function update(NewCategorieRequest $request, $id_produk)
     {
         $categorie = Categorie::find($id_produk);
 
@@ -53,13 +49,9 @@ public function update(Request $request, $id_produk)
             return response()->json(['message' => 'Produk tidak ditemukan'], 404);
         }
        
-        $validatedData = $request->validate([
-           'category_name' => 'required|string|max:255' 
-        ]);
-
-       
-        $categorie->category_name = $validatedData['category_name'];
-        $categorie->save();
+        $categorie->fill([
+            'category_name' => $request['category_name'],
+        ])->save();
 
      
         return response()->json($categorie, 200);

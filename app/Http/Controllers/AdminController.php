@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\NewAdminRequest;
 use Illuminate\Http\Request;
 use App\Models\Admin;
 use Illuminate\Support\Facades\Hash;
@@ -16,20 +17,13 @@ class AdminController extends Controller
     }
 
     // Menambahkan admin baru
-    public function store(Request $request)
+    public function store(NewAdminRequest $request)
     {
         
-        $validatedData = $request->validate([
-            'username' => 'required|string|max:255',
-            'email' => 'nullable|email',
-            'password' => 'required|string|min:8'
-        ]);
-
-        
         $admin = Admin::create([
-            'username' => $validatedData['username'],
-            'email' => $validatedData['email'],
-            'password' => Hash::make($validatedData['password']),
+            'username' => $request['username'],
+            'email' => $request['email'],
+            'password' => Hash::make($request['password']),
         ]);
 
         
@@ -44,7 +38,7 @@ class AdminController extends Controller
     }
 
     // Mengupdate data admin berdasarkan ID
-    public function update(Request $request, $id_admin)
+    public function update(NewAdminRequest $request, $id_admin)
     {
         $admin = Admin::find($id_admin);
 
@@ -52,16 +46,11 @@ class AdminController extends Controller
             return response()->json(['message' => 'Admin tidak ditemukan'], 404);
         }
 
-        $validatedData = $request->validate([
-            'username' => 'required|string|max:255',
-            'email' => 'nullable|email',
-            'password' => 'required|string|min:8',
-        ]);
-
-        $admin->username = $validatedData['username'];
-        $admin->email = $validatedData['email'];
-        $admin->password = Hash::make($validatedData['password']);
-        $admin->save();
+        $admin->fill([
+            'username' => $request['username'],
+            'email' => $request['email'],
+            'password' => Hash::make($request['password']),
+        ])->save();
 
         return response()->json($admin, 200);
     }
