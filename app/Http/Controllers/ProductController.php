@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\NewProductRequest;
 use Illuminate\Http\Request;
 use App\Models\Product;
 
@@ -15,20 +16,14 @@ class ProductController extends Controller
     }
 
     //Menambahkan produk
-    public function store(Request $request)
+    public function store(NewProductRequest $request)
     {
-        $validatedData = $request->validate([
-            'product_name' => 'required|string|max:255',
-            'image' => 'nullable|string',
-            'id_category' => 'required|integer',
-            'price' => 'required|numeric'
-        ]);
 
         $product = Product::create([
-            'product_name' => $validatedData['product_name'],
-            'image' => $validatedData['image'],
-            'id_category' => $validatedData['id_category'],
-            'price' => $validatedData['price']
+            'product_name' => $request['product_name'],
+            'image' => $request['image'],
+            'id_category' => $request['id_category'],
+            'price' => $request['price']
         ]);
 
         return response()->json(['data' => $product], 201);
@@ -42,26 +37,19 @@ class ProductController extends Controller
     }
 
     //Update a product by ID.
-    public function update(Request $request, $id_produk)
+    public function update(NewProductRequest $request, $id_produk)
     {
         $product = Product::find($id_produk);
 
         if (!$product) {
             return response()->json(['message' => 'Product not found'], 404);
         }
-
-        $validatedData = $request->validate([
-            'product_name' => 'required|string|max:255',
-            'image' => 'nullable|string',
-            'id_category' => 'required|integer',
-            'price' => 'required|numeric'
-        ]);
-
-        $product->product_name = $validatedData['product_name'];
-        $product->image = $validatedData['image'];
-        $product->id_category = $validatedData['id_category'];
-        $product->price = $validatedData['price'];
-        $product->save();
+        $product->fill([
+            'product_name' => $request['product_name'],
+            'image' => $request['image'],
+            'id_category' => $request['id_category'],
+            'price' => $request['price']
+        ])->save();
 
         return response()->json(['data' => $product], 200);
     }

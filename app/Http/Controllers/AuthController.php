@@ -11,7 +11,7 @@ use App\Models\Customer;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    public function loginAdmin(Request $request)
     {
         $request->validate([
             'email' => 'required|email',
@@ -20,25 +20,47 @@ class AuthController extends Controller
 
         $credentials = $request->only('email', 'password');
 
-        // Cek admin
+        // Cek employee
         $admin = Admin::where('email', $credentials['email'])->first();
         if ($admin && Hash::check($credentials['password'], $admin->password)) {
-            $token = $admin->createToken('admin-token')->plainTextToken;
-            return response()->json(['token' => $token, 'role' => 'admin']);
+            $token = $admin->createToken('employee-token')->plainTextToken;
+            return response()->json(['token' => $token]);
         }
+
+        return response()->json(['message' => 'Unauthorized'], 401);
+    }
+    public function loginEmployee(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $credentials = $request->only('email', 'password');
 
         // Cek employee
         $employee = Employee::where('email', $credentials['email'])->first();
         if ($employee && Hash::check($credentials['password'], $employee->password)) {
             $token = $employee->createToken('employee-token')->plainTextToken;
-            return response()->json(['token' => $token, 'role' => 'employee']);
+            return response()->json(['token' => $token, 'role' => $employee->role]);
         }
 
+        return response()->json(['message' => 'Unauthorized'], 401);
+    }
+
+    public function loginCustomer(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $credentials = $request->only('email', 'password');
         // Cek customer
         $customer = Customer::where('email', $credentials['email'])->first();
         if ($customer && Hash::check($credentials['password'], $customer->password)) {
             $token = $customer->createToken('customer-token')->plainTextToken;
-            return response()->json(['token' => $token, 'role' => 'customer']);
+            return response()->json(['token' => $token]);
         }
 
         return response()->json(['message' => 'Unauthorized'], 401);
