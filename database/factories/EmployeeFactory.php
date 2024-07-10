@@ -23,6 +23,7 @@ class EmployeeFactory extends Factory
             'notelp' => fake()->phoneNumber(),
             'salary' => fake()->numberBetween(1000000, 10000000),
             'status' => fake()->randomElement(['active', 'non active']),
+            'role' => fake()->randomElement(['packing', 'purchasing', 'admin']),
             'email' => fake()->unique()->safeEmail(),
             'password' => static::$password ??= Hash::make('password'),
         ];
