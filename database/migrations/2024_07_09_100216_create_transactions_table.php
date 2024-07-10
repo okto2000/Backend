@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_customer');
-            $table->foreignId('id_product');
-            $table->number('price');
             $table->date('transaction_date');
+            $table->string('address');
+            $table->string('payment_method');
             $table->enum('status', ['belum dibayar','sedang diproses','dibayar']);
+            $table->decimal('total', 12, 2);
             $table->timestamps();
             
             $table->foreign('id_customer')->references('id')->on('customers');
-            $table->foreign('id_product')->references('id')->on('products');
         });
     }
 

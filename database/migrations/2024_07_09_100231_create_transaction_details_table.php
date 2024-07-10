@@ -17,10 +17,8 @@ return new class extends Migration
             $table->foreignId('id_product');
             $table->decimal('price', 8, 2);
             $table->integer('qty');
-            $table->string('address');
-            $table->string('payment_method');
             $table->date('transaction_date');
-            $table->enum('status', ['belum dibayar','sedang diproses','dibayar']);
+            $table->decimal('subtotal', 10, 2);
             $table->timestamps();
             
             $table->foreign('id_product')->references('id')->on('products');
