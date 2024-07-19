@@ -11,24 +11,6 @@ use App\Models\Customer;
 
 class AuthController extends Controller
 {
-    public function loginAdmin(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-
-        $credentials = $request->only('email', 'password');
-
-        // Cek employee
-        $admin = Admin::where('email', $credentials['email'])->first();
-        if ($admin && Hash::check($credentials['password'], $admin->password)) {
-            $token = $admin->createToken('employee-token')->plainTextToken;
-            return response()->json(['token' => $token]);
-        }
-
-        return response()->json(['message' => 'Unauthorized'], 401);
-    }
     public function loginEmployee(Request $request)
     {
         $request->validate([
