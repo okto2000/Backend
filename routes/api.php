@@ -9,33 +9,38 @@ use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Middleware\EnsureTokenIsPresent;
 
 //Route auth
 Route::post('/register', [AuthController::class, 'registerCustomer']);
 Route::post('/login/customer', [AuthController::class, 'loginCustomer']);
 Route::post('/login/employee', [AuthController::class, 'loginEmployee']);
-Route::get('/product', [ProductController::class, 'index']);
+// Route::get('/product', [ProductController::class, 'index']);
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
     
     // Route midtrans
     Route::post('/gettoken', [MidtransController::class, 'gettoken']);
 
     // Route product
-    Route::resource('product', ProductController::class);
-
+    Route::Resource('/products', ProductController::class);
+    
+    // Route product
+    Route::Resource('/transactions', TransactionController::class);
+    
     // Route admin
     // Route::resource('admin', AdminController::class);
-    // Uncomment above line if AdminController is a resource controller
-
+    
     // Route employee
-    Route::resource('employee', EmployeeController::class);
-
+    Route::Resource('employees', EmployeeController::class);
+    
     // Route categorie
-    Route::resource('categorie', CategorieController::class);
+    Route::Resource('categories', CategorieController::class);
 
     // Route customer
-    Route::get('/customer', [CustomerController::class, 'index']);
+    Route::get('/customers', [CustomerController::class, 'index']);
+    Route::delete('/customers/{id}', [CustomerController::class, 'destroy']);
 
     // Route Logout
     Route::post('/logout', [AuthController::class, 'logout']);

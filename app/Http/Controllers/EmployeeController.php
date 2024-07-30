@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EditEmployeeRequest;
 use App\Http\Requests\NewEmployeeRequest;
 use Illuminate\Http\Request;
 use App\Models\Employee;
 use Illuminate\Support\Facades\Hash;
 
-class EmployeeController extends Controller
+class EmployeeController extends BaseController
 {
     // Menampilkan semua employee    
-    public function index()
+    public function index(Request $request)
     {
-        $employees = Employee::all();
-        return response()->json($employees);
+        $perPage = $request->input('per_page', 10);
+        $search = $request->input('search', '');
+        $employees = Employee::where('name', 'LIKE', '%' . $search . '%')->paginate($perPage);
+        return $this->baseResponse($employees);
     }
 
     // Menambahkan employee baru
@@ -21,28 +24,28 @@ class EmployeeController extends Controller
     {
 
         $employee = Employee::create([
-            'name' => $request['name'],
-            'address' => $request['address'],
-            'notelp' => $request['notelp'],
-            'salary' => $request['salary'],
-            'status' => $request['status'],
-            'role' => $request['role'],
-            'email' => $request['email'],
-            'password' => Hash::make($request['password']),
+            'name' => $request->name,
+            'address' => $request->address,
+            'notelp' => $request->notelp,
+            'salary' => $request->salary,
+            'status' => $request->status,
+            'role' => $request->role,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
         ]);
 
-        return response()->json($employee, 201);
+        return $this->baseResponse($employee);
     }
 
     //Menampilkan detail employee berdasarkan ID
     public function show($id)
     {
         $employee = Employee::findOrFail($id);
-        return response()->json(['data' => $employee]);
+        return $this->baseResponse($employee);
     }
 
     // Mengupdate data employee berdasarkan ID
-    public function update(NewEmployeeRequest $request, $id)
+    public function update(EditEmployeeRequest $request, $id)
     {
         $employee = Employee::find($id);
 
@@ -61,7 +64,7 @@ class EmployeeController extends Controller
             'password' => Hash::make($request->password),
         ])->save();
 
-        return response()->json(['message' => 'Employee successfully updated', 'data' => $employee], 200);
+        return $this->baseResponse($employee, 'Employee successfully updated');
     }
 
     //Menghapus employee berdasarkan ID

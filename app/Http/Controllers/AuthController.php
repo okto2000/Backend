@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RegisterCustomerRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Admin;
@@ -24,7 +25,7 @@ class AuthController extends Controller
         $employee = Employee::where('email', $credentials['email'])->first();
         if ($employee && Hash::check($credentials['password'], $employee->password)) {
             $token = $employee->createToken('employee-token')->plainTextToken;
-            return response()->json(['token' => $token, 'role' => $employee->role]);
+            return response()->json(['token' => $token,'data'=>$employee, 'role' => $employee->role]);
         }
 
         return response()->json(['message' => 'Unauthorized'], 401);
@@ -48,16 +49,8 @@ class AuthController extends Controller
         return response()->json(['message' => 'Unauthorized'], 401);
     }
     // Registers a new customer.
-    public function registerCustomer(Request $request)
+    public function registerCustomer(RegisterCustomerRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'notelp' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:customers',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-
         $customer = Customer::create([
             'name' => $request->name,
             'address' => $request->address,
@@ -65,16 +58,38 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-
-        return response()->json(['message' => 'Registration successful', 'customer' => $customer], 201);
+        $token = $customer->createToken('customer-token')->plainTextToken;
+        return response()->json(['message' => 'Registration successful', 'customer' => $customer,'token' => $token], 201);
     }
 
     // Logout.
     public function logout(Request $request)
     {
-        $token = $request->user()->currentAccessToken();
-        $token->delete();
+        $request->user()->currentAccessToken()->delete();
+        // $token->delete();
 
         return response()->json(['message' => 'Successfully logged out']);
     }
+    
+    // public function googleLogin(Request $request)
+    // {
+    //     $googleToken = $request->input('token');
+        
+    //     try {
+    //         $googleUser = Socialite::driver('google')->userFromToken($googleToken);
+    //         $email = $googleUser->getEmail();
+            
+    //         $user = Customer::where('email', $email)->first();
+    //         if (!$user) {
+
+    //             return response()->json(['message' => 'User not found'], 404);
+    //         }
+
+    //         $token = $user->createToken('web')->plainTextToken;
+
+    //         return response()->json(['token' => $token, 'user' => $user], 200);
+    //     } catch (\Exception $e) {
+    //         return response()->json(['message' => 'Authentication failed', 'error' => $e->getMessage()], 500);
+    //     }
+    // }
 }

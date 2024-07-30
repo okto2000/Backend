@@ -5,64 +5,65 @@ namespace App\Http\Controllers;
 use App\Http\Requests\NewCategorieRequest;
 use Illuminate\Http\Request;
 use App\Models\Categorie;
-class CategorieController extends Controller
-{
-    //Menampilkan semua data categorie
-    public function index()
-    {
-       
-        $categories = Categorie::all();
+use Illuminate\Routing\Controllers\Middleware;
 
-        
-        return response()->json($categories);
+class CategorieController extends BaseController
+{
+
+    //Menampilkan semua data categorie
+    public function index(Request $request)
+    {
+        $perPage = $request->input('per_page', 10);
+        $search = $request->input('search', '');
+        $categories = Categorie::where('category_name', 'LIKE', '%' . $search . '%')->paginate($perPage);
+        return $this->baseResponse($categories);
     }
 
-//Menambahkan categorie
-public function store(NewCategorieRequest $request)
-{
-   
-    $categorie = Categorie::create([
-        'category_name' => $request['category_name'],
-    ]);
+    //Menambahkan categorie
+    public function store(NewCategorieRequest $request)
+    {
 
-   
-    return response()->json($categorie, 201);
-}
+        $categorie = Categorie::create([
+            'category_name' => $request->category_name,
+        ]);
 
-//Menampilkan Categorie by ID
-public function show($id_produk)
-{
-  
-    $categorie = Categorie::findOrFail($id_produk);
 
- 
-    return response()->json($categorie);
-}
+        return $this->baseResponse($categorie, 'Categorie successfully created');
+    }
 
-//Update a Categorie by ID
-public function update(NewCategorieRequest $request, $id_produk)
+    //Menampilkan Categorie by ID
+    public function show($id_produk)
+    {
+
+        $categorie = Categorie::findOrFail($id_produk);
+
+        return $this->baseResponse($categorie);
+    }
+
+    //Update a Categorie by ID
+    public function update(NewCategorieRequest $request, $id_produk)
     {
         $categorie = Categorie::find($id_produk);
 
-     
+
         if (!$categorie) {
             return response()->json(['message' => 'Produk tidak ditemukan'], 404);
         }
-       
+
         $categorie->fill([
-            'category_name' => $request['category_name'],
+            'category_name' => $request->category_name,
         ])->save();
 
-     
-        return response()->json($categorie, 200);
+
+        return $this->baseResponse($categorie, 'Categorie successfully updated');
     }
 
     //Delete Categorie by ID
-public function destroy($id_produk)
-{
-    $categorie = Categorie::findOrFail($id_produk);
+    public function destroy($id_produk)
+    {
+        $categorie = Categorie::findOrFail($id_produk);
 
-    $categorie->delete();
-    return response()->json(['message' => 'Categorie successfully deleted']);
-}
+        $categorie->delete();
+        return response()->json(['message' => 'Categorie successfully deleted']);
+    }
 }
