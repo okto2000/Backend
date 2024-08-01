@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\NewProductRequest;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends BaseController
 {
@@ -20,14 +21,16 @@ class ProductController extends BaseController
     //Menambahkan produk
     public function store(NewProductRequest $request)
     {
+        $imagePath = $request->file('image')->store('products', 'public');
 
         $product = Product::create([
             'product_name' => $request->product_name,
-            'image' => $request->image,
+            'image' => $imagePath,
             'id_category' => $request->id_category,
             'price' => $request->price,
         ]);
-
+        $product->image_url = $product->image_url;
+        
         return $this->baseResponse($product);
     }
 

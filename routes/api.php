@@ -18,10 +18,10 @@ Route::post('/login/customer', [AuthController::class, 'loginCustomer']);
 Route::post('/login/employee', [AuthController::class, 'loginEmployee']);
 // Route::get('/product', [ProductController::class, 'index']);
 
+Route::post('/gettoken', [MidtransController::class, 'gettoken']);
 Route::middleware(['auth:sanctum'])->group(function () {
     
     // Route midtrans
-    Route::post('/gettoken', [MidtransController::class, 'gettoken']);
 
     // Route product
     Route::Resource('/products', ProductController::class);
@@ -37,10 +37,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     
     // Route categorie
     Route::Resource('categories', CategorieController::class);
+    Route::Resource('customers', CustomerController::class);
 
     // Route customer
-    Route::get('/customers', [CustomerController::class, 'index']);
-    Route::delete('/customers/{id}', [CustomerController::class, 'destroy']);
+    // Route::get('/customers', [CustomerController::class, 'index']);
+    // Route::put('/customers/{id}', [CustomerController::class, 'update']);
+    // Route::delete('/customers/{id}', [CustomerController::class, 'destroy']);
 
     // Route Logout
     Route::post('/logout', [AuthController::class, 'logout']);

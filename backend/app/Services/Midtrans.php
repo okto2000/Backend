@@ -15,7 +15,7 @@ class Midtrans {
         $this->serverKey = config('app.server_key');
         $this->isProduction = false;
         $this->isSanitized = config('app.is_sanitized');
-        $this->is3ds = config('app.i    s_3ds');
+        $this->is3ds = config('app.is_3ds');
 
         $this->_configureMidtrans();
     }

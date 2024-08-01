@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EditCustomerRequest;
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class CustomerController extends BaseController
 {
@@ -13,6 +15,18 @@ class CustomerController extends BaseController
         $search = $request->input('search', '');
         $customers = Customer::where('name', 'LIKE', '%' . $search . '%')->paginate($perPage);
         return $this->baseResponse($customers);
+    }
+    public function update(EditCustomerRequest $request,  $id)
+    {
+        $customer = Customer::find($id);
+
+        if (!$customer) {
+            return response()->json(['message' => 'Customer not found'], 404);
+        }
+
+        $customer->fill($request->all())->save();
+
+        return $this->baseResponse($customer, 'Customer successfully updated');
     }
 
     public function destroy(Request $request, $id)
