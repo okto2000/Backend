@@ -20,19 +20,19 @@ class ProductController extends BaseController
 
     //Menambahkan produk
     public function store(NewProductRequest $request)
-    {
-        $imagePath = $request->file('image')->store('products', 'public');
+{
+    $imagePath = $request->file('image')->store('public/image');
 
-        $product = Product::create([
-            'product_name' => $request->product_name,
-            'image' => $imagePath,
-            'id_category' => $request->id_category,
-            'price' => $request->price,
-        ]);
-        $product->image_url = $product->image_url;
-        
-        return $this->baseResponse($product);
-    }
+    $product = Product::create([
+        'product_name' => $request->product_name,
+        'image' => asset('storage/image/' . basename($imagePath)),
+        'id_category' => $request->id_category,
+        'price' => $request->price,
+    ]);
+
+    return $this->baseResponse($product);
+}
+
 
     //Menampilkan produk by ID
     public function show($id)
@@ -43,22 +43,21 @@ class ProductController extends BaseController
 
     //Update a product by ID.
     public function update(NewProductRequest $request, $id)
-    {
-        $product = Product::find($id);
+{
+    $product = Product::find($id);
 
-        if (!$product) {
-            return response()->json(['message' => 'Product not found'], 404);
-        }
-        $product->fill([
-            'product_name' => $request->product_name,
-            'image' => $request->image,
-            'id_category' => $request->id_category,
-            'price' => $request->price
-        ])->save();
-
-        return $this->baseResponse($product);
+    if (!$product) {
+        return response()->json(['message' => 'Product not found'], 404);
     }
 
+    // Pastikan data diterima dengan benar
+    dd($request->all());
+
+    // Lanjutkan dengan update data produk
+    $product->update($request->all());
+
+    return response()->json(['message' => 'Product updated successfully', 'product' => $product]);
+}
     //Deletes a product with the given ID.
     public function destroy($id)
     {

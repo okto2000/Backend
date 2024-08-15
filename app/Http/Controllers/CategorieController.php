@@ -41,9 +41,9 @@ class CategorieController extends BaseController
     }
 
     //Update a Categorie by ID
-    public function update(NewCategorieRequest $request, $id_produk)
+    public function update(NewCategorieRequest $request, $id)
     {
-        $categorie = Categorie::find($id_produk);
+        $categorie = Categorie::find($id);
 
 
         if (!$categorie) {

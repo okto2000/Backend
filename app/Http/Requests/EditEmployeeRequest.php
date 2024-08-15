@@ -30,7 +30,6 @@ class EditEmployeeRequest extends FormRequest
                 'status' => 'required',
                 'role' => 'required',
                 'email' => 'required|string|email|max:255',
-                'password' => 'required|string|min:8',
         ];
     }
 }

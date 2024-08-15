@@ -17,30 +17,33 @@ class CreateSnapTokenService extends Midtrans
 
     public function getSnapToken()
     {
+        $totalPrice = 0;
+        foreach ($this->order['items'] as $item) {
+            $totalPrice += $item['price'] * $item['quantity'];
+        }
         $params = [
             'transaction_details' => [
-                'order_id' => $this->order->number,
-                'gross_amount' => $this->order->total_price,
+                'order_id' => $this->order['order_id'],
+                'gross_amount' => $totalPrice,
+                'transaction_date' => date('Y-m-d H:i:s'),
             ],
             'item_details' => [
                 [
-                    'id' => 1,
-                    'price' => '150000',
-                    'quantity' => 1,
-                    'name' => 'Flashdisk Toshiba 32GB',
-                ],
-                [
-                    'id' => 2,
-                    'price' => '60000',
-                    'quantity' => 2,
-                    'name' => 'Memory Card VGEN 4GB',
-                ],
+                    'id' => $item['id'],
+                    'price' => $item['price'],
+                    'quantity' => $item['quantity'],
+                    'name' => $item['name'],
+                ]
             ],
             'customer_details' => [
-                'first_name' => 'Martin Mulyo Syahidin',
-                'email' => 'mulyosyahidin95@gmail.com',
-                'phone' => '081234567890',
-            ]
+                'id_customer' => $this->order['id_customer'],
+                'first_name' => $this->order['name'],
+                'email' => $this->order['email'],
+                'phone' => $this->order['phone'],
+            ],
+            'shipping_address' => [
+                'address' => $this->order['address'],
+            ],
         ];
 
         $snapToken = Snap::getSnapToken($params);

@@ -61,7 +61,6 @@ class EmployeeController extends BaseController
             'status' => $request->status,
             'role' => $request->role,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
         ])->save();
 
         return $this->baseResponse($employee, 'Employee successfully updated');
