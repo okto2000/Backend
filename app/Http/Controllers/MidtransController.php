@@ -15,7 +15,6 @@ class MidtransController extends Controller
     {
         $request->validate([
             'order_id' => 'required|integer',
-            'gross_amount' => 'required|numeric',
             'items' => 'required|array',
             'items.*.id' => 'required|integer',
             'items.*.price' => 'required|numeric',
@@ -30,7 +29,6 @@ class MidtransController extends Controller
 
         $order = $request->only([
             'order_id',
-            'gross_amount',
             'id_customer',
             'address',
             'name',

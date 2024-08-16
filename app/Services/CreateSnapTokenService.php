@@ -17,6 +17,14 @@ class CreateSnapTokenService extends Midtrans
 
     public function getSnapToken()
     {
+        // $itemDetails = array_map(function($item) {
+        //     return [
+        //         'id' => $item['id'],
+        //         'price' => $item['price'],
+        //         'quantity' => $item['quantity'],
+        //         'name' => $item['name'],
+        //     ];
+        // }, $this->order['items']);
         $totalPrice = 0;
         foreach ($this->order['items'] as $item) {
             $totalPrice += $item['price'] * $item['quantity'];
@@ -27,14 +35,7 @@ class CreateSnapTokenService extends Midtrans
                 'gross_amount' => $totalPrice,
                 'transaction_date' => date('Y-m-d H:i:s'),
             ],
-            'item_details' => [
-                [
-                    'id' => $item['id'],
-                    'price' => $item['price'],
-                    'quantity' => $item['quantity'],
-                    'name' => $item['name'],
-                ]
-            ],
+            'item_details' => $this->order['items'],
             'customer_details' => [
                 'id_customer' => $this->order['id_customer'],
                 'first_name' => $this->order['name'],

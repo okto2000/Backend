@@ -10,11 +10,4 @@ class Product extends Model
 {
     use HasFactory;
     protected $guarded = [];
-
-    protected $appends = ['image_url'];
-    
-    public function getImageUrlAttribute()
-    {
-        return Storage::url($this->image);
-    }
 }

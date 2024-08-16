@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\NewProductRequest;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends BaseController
@@ -20,18 +21,18 @@ class ProductController extends BaseController
 
     //Menambahkan produk
     public function store(NewProductRequest $request)
-{
-    $imagePath = $request->file('image')->store('public/image');
+    {
+        $imagePath = $request->file('image')->store('public/image');
 
-    $product = Product::create([
-        'product_name' => $request->product_name,
-        'image' => asset('storage/image/' . basename($imagePath)),
-        'id_category' => $request->id_category,
-        'price' => $request->price,
-    ]);
+        $product = Product::create([
+            'product_name' => $request->product_name,
+            'image' => asset('storage/image/' . basename($imagePath)),
+            'id_category' => $request->id_category,
+            'price' => $request->price,
+        ]);
 
-    return $this->baseResponse($product);
-}
+        return $this->baseResponse($product);
+    }
 
 
     //Menampilkan produk by ID
@@ -43,21 +44,39 @@ class ProductController extends BaseController
 
     //Update a product by ID.
     public function update(NewProductRequest $request, $id)
-{
-    $product = Product::find($id);
+    {
+        $product = Product::find($id);
+    
+        if (!$product) {
+            return response()->json(['message' => 'Product not found'], 404);
+        }
+    
+        $updateData = [
+            'product_name' => $request->product_name,
+            'id_category' => $request->id_category,
+            'price' => $request->price,
+        ];
+    
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imagePath = $image->store('public/image');
+            $newImagePath = 'storage/image/' . basename($imagePath);
+    
+            if ($product->image) {
+                $oldImagePath = str_replace(asset(''), '', $product->image);
+                if (file_exists(public_path($oldImagePath))) {
+                    unlink(public_path($oldImagePath));
+                }
+            }
+    
+            $updateData['image'] = asset($newImagePath);
+        }
+    
+        $product->update($updateData);
+    
+        return response()->json(['message' => 'Product updated successfully', 'product' => $product]);
+    }       
 
-    if (!$product) {
-        return response()->json(['message' => 'Product not found'], 404);
-    }
-
-    // Pastikan data diterima dengan benar
-    dd($request->all());
-
-    // Lanjutkan dengan update data produk
-    $product->update($request->all());
-
-    return response()->json(['message' => 'Product updated successfully', 'product' => $product]);
-}
     //Deletes a product with the given ID.
     public function destroy($id)
     {

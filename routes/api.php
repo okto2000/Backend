@@ -19,15 +19,16 @@ Route::post('/login/customer', [AuthController::class, 'loginCustomer']);
 Route::post('/login/employee', [AuthController::class, 'loginEmployee']);
 // Route::get('/product', [ProductController::class, 'index']);
 
+Route::post('/midtrans/notification', [MidtransController::class, 'handleNotification']);
 Route::middleware(['auth:sanctum'])->group(function () {
     
     // Route midtrans
     Route::post('/gettoken', [MidtransController::class, 'gettoken']);
     Route::post('/gettoken/${orderId}', [MidtransController::class, 'gettoken']);
-    Route::post('/midtrans/notification', [MidtransController::class, 'handleNotification']);
     
     // Route product
     Route::Resource('/products', ProductController::class);
+    Route::post('/products/{id}', [ProductController::class, 'update']);
 
     // Route product
     Route::Resource('/transactions', TransactionController::class);
