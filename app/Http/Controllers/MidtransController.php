@@ -36,7 +36,6 @@ class MidtransController extends Controller
             'phone',
             'items'
         ]);
-
         $midtrans = new CreateSnapTokenService($order);
         $snapToken = $midtrans->getSnapToken();
 
